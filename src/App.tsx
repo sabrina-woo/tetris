@@ -1,24 +1,32 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Menu from './Menu';
+import Board from './Board';
 
 function App() {
+  //curly brackets: react knows we wnat to output our dynamic value 
+  let title: string = "Tetris"
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> byee.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App-Title">
+      <h1>
+        <center> 
+          {title}  
+          </center>
+      </h1>
+    </div>
+
+
+      <div className="App-Menu">
+      <Menu/>
+      </div>
+      
+      <div className="App-Board">
+      <Board/>
+      </div>
+      
     </div>
   );
 }
