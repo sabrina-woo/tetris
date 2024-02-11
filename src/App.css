@@ -49,18 +49,16 @@
   color: white;
 }
 
-.App-Board {
+.App-Game {
   background-color: #000000;
   height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 1.5vh;
+  font-size: 2vh;
   white-space: pre-line;
   color: azure;
-    
-
 }
 
 .App-link {

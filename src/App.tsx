@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Menu from './Menu';
 import Board from './Board';
+import Game from './Game';
 
 function App() {
   //curly brackets: react knows we wnat to output our dynamic value 
@@ -23,8 +24,12 @@ function App() {
       <Menu/>
       </div>
       
-      <div className="App-Board">
+      {/* <div className="App-Board">
       <Board/>
+      </div> */}
+
+      <div className="App-Game">
+      <Game/>
       </div>
       
     </div>
