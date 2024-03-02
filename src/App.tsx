@@ -2,11 +2,10 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Menu from './Menu';
-import Board from './Board';
+import Board from './GameBoard';
 import Game from './Game';
 
 function App() {
-  //curly brackets: react knows we wnat to output our dynamic value 
   let title: string = "Tetris"
 
   return (
