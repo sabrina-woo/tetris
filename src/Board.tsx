@@ -1,42 +1,19 @@
 import React, { Component } from 'react'
 import Row from './Row';
 
-export interface Tile {
+const colours: string[] = ['None', 'LighBlue', 'Yellow', 'Orange', 'DarkBlue', 'Green', 'Red', 'Purple']
+
+interface Tile {
     id: string, 
     hasPiece: boolean
+    colour: string
 }
 
-const Board = () => {
+const Board = ({board} : {board: Tile[][]}) => {
 
-    function makeRow(rowNumber: number): Tile[] {
-        let tileArray = [];
-        for(let i = 1; i <= 10; i++) {
-            let tileID: string;
-            let tile: Tile;
-            let columnNumberString = i.toString();
-            let rowNumberString = rowNumber.toString();
-
-            tileID = columnNumberString.concat("x", rowNumberString, "  ");
-            tile = {id: tileID, hasPiece: false}
-            tileArray[i] = tile; 
-        }
-        return tileArray;
-    }     
-
-    var boardData: Tile[][] = [];
-    boardData = makeGrid()
-    
-    function makeGrid(): Tile[][] {
-            
-        for(let i = 1; i <= 20; i++) {
-            boardData[i] = makeRow(i);
-        }
-        return boardData;
-    }
-
-    let rowArray = boardData.map((row) => (
+    let rowArray = board.map((row) => (
         // <li className = 'Row'>{boardData.indexOf(row)}<Row row={boardData[boardData.indexOf(row)]}/></li>
-        <li className = 'Row'><Row row={boardData[boardData.indexOf(row)]}/></li>
+        <li className = 'Row'><Row row={board[board.indexOf(row)]}/></li>
     ))
   
     return (

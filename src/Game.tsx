@@ -8,19 +8,41 @@ const green = [4, 14, 15, 25];
 const red = [5, 14, 15, 24]; //good
 const purple = [4, 14, 15, 24]; //good 
 
+const colours: string[] = ['None', 'LighBlue', 'Yellow', 'Orange', 'DarkBlue', 'Green', 'Red', 'Purple']
 const pieces = [lighBlue, yellow, orange, darkBlue, green, red, purple];
-           
 
-// class TetrisGame {
-//     public board: string[][];
-//     public piece: number[];
+var board: Tile[][] = makeGrid()
 
-//     public constructor() {
-//         this.board = GameBoard();
-//         this.piece = getPiece(); 
-//     }
+export interface Tile {
+    id: string, 
+    hasPiece: boolean
+    colour: string
+}
 
-// } 
+//returns an array of 10 tiles 
+function makeRow(rowNumber: number): Tile[] {
+    let tileArray = [];
+    for(let i = 1; i <= 10; i++) {
+        let tileID: string;
+        let tile: Tile;
+        let columnNumberString = i.toString();
+        let rowNumberString = rowNumber.toString();
+
+        tileID = columnNumberString.concat("x", rowNumberString, "  ");
+        tile = {id: tileID, hasPiece: false, colour: colours[0]}
+        tileArray[i] = tile; 
+    }
+    return tileArray;
+}
+    
+//returns an array 
+function makeGrid(): Tile[][] {
+    var board = []
+    for(let i = 1; i <= 20; i++) {
+        board[i] = makeRow(i);
+    }
+    return board;
+}
 
 //returns a random number from 1-6 that corresponds with a random tetris piece
 function getPiece(): number[] {
@@ -44,7 +66,9 @@ function deployPiece(grid: string[][], tetrisPiece: number[]): string[][] {
 
 function Game() {
     return ( 
-        <Board/>
+        <div className='Board'>
+            <Board board={board}/>
+        </div>
      );
   }
    

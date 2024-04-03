@@ -1,35 +1,25 @@
 .App {
   text-align: center;
   background-color: hsl(0, 0%, 0%);
+  justify-content: space-around;
 }
 
-.App-Title {
-  background-color: #1cacf4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* width: calc(100%-5px) */
-  height: 10vh;
-  font-size: 3vw;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
-}
-
-
-.Tile {
-  display: inline-block;
-  width: 5vw;
-  height: 5vw;
-  background-color: #00000000;
-  border: solid;
-  border-color: #fdfdfd;
-  border-radius: 10px;
+.Menu {
+  text-align: center;
+  color: rgb(30, 232, 232);
+  background-color: rgb(43, 45, 45);
+  height: 7vh
 }
 
 .Board {
-  background-color: hsl(0, 0%, 0%);
-  border: solid;
+  
+}
+
+.App-Title {
+  height: 15vh; 
+  font-size: 3vw;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
 }
 
 .Row {
@@ -37,7 +27,7 @@
   width: 95vw;
   margin: auto;
   list-style: none;
-  /* color: transparent; */
+  padding-bottom: 1vh;
 }
 
 .App-Game {
@@ -50,4 +40,84 @@
   font-size: 2vh;
   white-space: pre-line;
   color: azure;
+}
+
+.None {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color: transparent;
+  border-radius: 7px;
+}
+
+.LighBlue {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #9bfcff; 
+  border-radius: 7px;
+}
+
+.Yellow {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #fdff9b;  
+  border-radius: 7px;
+}
+
+.Orange {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #eec179;  
+  border-radius: 7px;
+}
+
+.DarkBlue {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color: hsl(233, 86%, 60%);  
+  border-radius: 7px;
+}
+
+.Green {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #9bffac;  
+  border-radius: 7px;
+}
+
+.Red {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #fd6d6d;  
+  border-radius: 7px;
+}
+
+.Purple {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #ba80f8; 
+  border-radius: 7px;
 }

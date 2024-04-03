@@ -3,7 +3,7 @@
 
 function Menu() {
     return ( 
-        <menu >
+        <menu className='Menu'>
                 <center>
                 :D
                 </center>

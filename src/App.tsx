@@ -26,9 +26,8 @@ function App() {
       <Board/>
       </div> */}
 
-      <div className="App-Game">
         <Game/>
-      </div>
+
     </div>
   );
 }
