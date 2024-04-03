@@ -8,8 +8,6 @@ export interface Tile {
 
 const Board = () => {
 
-
-
     function makeRow(rowNumber: number): Tile[] {
         let tileArray = [];
         for(let i = 1; i <= 10; i++) {
@@ -42,7 +40,7 @@ const Board = () => {
     ))
   
     return (
-    <div className = "Board">
+    <div>
       {rowArray}
     </div>
   )
