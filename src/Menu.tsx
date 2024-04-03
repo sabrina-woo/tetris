@@ -3,12 +3,10 @@
 
 function Menu() {
     return ( 
-        <menu className="Menu">
-            <h2>
+        <menu >
                 <center>
                 :D
                 </center>
-            </h2>
         </menu>
      );
   }

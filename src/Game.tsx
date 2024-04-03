@@ -1,4 +1,4 @@
-import GameBoard from './GameBoard';
+import Board from './Board';
 
 const lighBlue = [3, 4, 5, 6]; 
 const yellow = [4, 5, 14, 15];  //good
@@ -44,14 +44,7 @@ function deployPiece(grid: string[][], tetrisPiece: number[]): string[][] {
 
 function Game() {
     return ( 
-        <menu className="Game">
-            <h2>
-                <center>
-                {GameBoard()}
-                {/* {deployPiece(GameBoard(), getPiece())} */}
-                </center> 
-            </h2>
-        </menu>
+        <Board/>
      );
   }
    

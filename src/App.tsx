@@ -1,9 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Menu from './Menu';
-import Board from './GameBoard';
 import Game from './Game';
+import Tile from './Tile';
 
 function App() {
   let title: string = "Tetris"
@@ -20,7 +19,7 @@ function App() {
 
 
       <div className="App-Menu">
-      <Menu/>
+        <Menu/>
       </div>
       
       {/* <div className="App-Board">
@@ -28,9 +27,8 @@ function App() {
       </div> */}
 
       <div className="App-Game">
-      <Game/>
+        <Game/>
       </div>
-      
     </div>
   );
 }
