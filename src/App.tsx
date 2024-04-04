@@ -1,11 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Menu from './Menu';
-import Board from './Board';
+import Game from './Game';
+import Tile from './Tile';
 
 function App() {
-  //curly brackets: react knows we wnat to output our dynamic value 
   let title: string = "Tetris"
 
   return (
@@ -20,13 +19,15 @@ function App() {
 
 
       <div className="App-Menu">
-      <Menu/>
+        <Menu/>
       </div>
       
-      <div className="App-Board">
+      {/* <div className="App-Board">
       <Board/>
-      </div>
-      
+      </div> */}
+
+        <Game/>
+
     </div>
   );
 }
