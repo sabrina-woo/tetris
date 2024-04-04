@@ -28,6 +28,7 @@
   margin: auto;
   list-style: none;
   padding-bottom: 1vh;
+ 
 }
 
 .App-Game {
@@ -68,9 +69,9 @@
   height: 4.5vh;
   border: solid;
   border-color: #fdfdfd;
-  background-color:  #fdff9b;  
+  background-color:  #fbf02a;  
   border-radius: 7px;
-}
+}  
 
 .Orange {
   display: inline-block;
@@ -78,7 +79,7 @@
   height: 4.5vh;
   border: solid;
   border-color: #fdfdfd;
-  background-color:  #eec179;  
+  background-color:  #f8a219;  
   border-radius: 7px;
 }
 

@@ -4,7 +4,8 @@ import Row from './Row';
 const colours: string[] = ['None', 'LighBlue', 'Yellow', 'Orange', 'DarkBlue', 'Green', 'Red', 'Purple']
 
 interface Tile {
-    id: string, 
+    xCoordinate: number
+    yCoordinate: number
     hasPiece: boolean
     colour: string
 }

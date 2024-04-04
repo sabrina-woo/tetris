@@ -3,7 +3,8 @@ import React from 'react'
 const colour: string[] = ['none', 'lighBlue', 'yellow', 'orange', 'darkBlue', 'green', 'red', 'purple']
 
 interface Tile {
-    id: string,
+    xCoordinate: number
+    yCoordinate: number
     hasPiece: boolean
     colour: string
 }
