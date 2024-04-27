@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import Menu from './Menu';
 import Game from './Game';
-import Tile from './Tile';
 
 function App() {
   let title: string = "Tetris"
