@@ -13,12 +13,12 @@ interface Piece {
 }
 
 const lighBlue: Piece = {pieceCoordinates: [[0, 4], [0, 5], [0, 6], [0, 3]], colour: 'LighBlue'}
-const yellow: Piece = {pieceCoordinates: [[1, 4], [1, 5], [0, 4], [0, 5]], colour: 'Yellow'}
-const orange: Piece = {pieceCoordinates: [[1, 4], [1, 5], [1, 3], [0, 5]], colour: 'Orange'}
-const darkBlue: Piece = {pieceCoordinates: [[1, 4], [1, 5], [1, 3], [0, 3]], colour: 'DarkBlue'}  
-const green: Piece = {pieceCoordinates: [[1, 3], [1, 4], [0, 4], [0, 5]], colour: 'Green'} 
-const red: Piece = {pieceCoordinates: [[1, 4], [1, 5], [0, 3], [0, 4]], colour: 'Red'}
-const purple: Piece = {pieceCoordinates: [[1, 4], [1, 5], [1, 3], [0, 4]], colour: 'Purple'}
+const yellow: Piece = {pieceCoordinates: [[0, 4], [0, 5], [1, 4], [1, 5]], colour: 'Yellow'}
+const orange: Piece = {pieceCoordinates: [[0, 5], [1, 3], [1, 4], [1, 5]], colour: 'Orange'}
+const darkBlue: Piece = {pieceCoordinates: [[0, 3], [1, 3], [1, 4], [1, 5]], colour: 'DarkBlue'}  
+const green: Piece = {pieceCoordinates: [[0, 4], [0, 5], [1, 3], [1, 4]], colour: 'Green'} 
+const red: Piece = {pieceCoordinates: [[0, 3], [0, 4], [1, 4], [1, 5]], colour: 'Red'}
+const purple: Piece = {pieceCoordinates: [[1, 3], [0, 4], [1, 4], [1, 5]], colour: 'Purple'}
     
 const pieces: Piece[] = [lighBlue, yellow, orange, darkBlue, green, red, purple];
   
@@ -39,7 +39,7 @@ function makeRow(rowNumber: number): Tile[] {
     
 //returns an array of 20 rows
 function makeGrid(): Tile[][] {
-    var board = []
+    let board = []
     for(let i = 0; i < 20; i++) {
         board[i] = makeRow(i);
     }
@@ -48,16 +48,28 @@ function makeGrid(): Tile[][] {
 
 //returns a random number from 0-6
 function getPieceNumber(): number {
-    const randomNumber: number = Math.random();
-    const randomInteger: number = Math.floor(randomNumber * 7);
+    let randomNumber: number = Math.random();
+    let randomInteger: number = Math.floor(randomNumber * 7);
 
     return randomInteger
 }
 
 function getRandomPiece(): Piece {
-    var number = getPieceNumber()
+    let number = getPieceNumber()
     return pieces[number]
 } 
+
+//takes in a grid and piece and returns true if the piece can be deployed, false otehrwise
+function canDeploy(grid: Tile[][], piece: Piece): boolean {
+    for (let i = 0; i < 4; i++) {
+        let coordinate: number[] = piece.pieceCoordinates[i];
+        let tile: Tile = grid[coordinate[0]][coordinate[1]]
+        if (tile.hasPiece) {
+            return false
+        }
+    }
+    return true;  
+}
 
 //takes in a board then returns the board with a random piece deployed at the top
 function deployPiece(grid: Tile[][], piece: Piece): Tile[][] {
@@ -73,27 +85,55 @@ function deployPiece(grid: Tile[][], piece: Piece): Tile[][] {
 
 //takes in a piece, and determines whether it will hit another piece if it moves down or sideways
 //
-function willHitPiece(board: Tile[][], piece: Piece): boolean {
+function willHitPieceDown(board: Tile[][], piece: Piece): boolean {
 
     return true
 }
 
-//takes in a piece, and determines whether it can be moved off screen if shifted left or right 
-function onEdgeOfGrid(piece: Piece): boolean {
+//takes in a piece, and determines whether it will hit another piece if it moves down or sideways
+//
+function willHitPieceLeft(board: Tile[][], piece: Piece): boolean {
 
-    let pieceCoordinates = piece.pieceCoordinates
+    return true
+}
+
+//takes in a piece, and determines whether it will hit another piece if it moves down or sideways
+//
+function willHitPieceRight(board: Tile[][], piece: Piece): boolean {
+
+    return true
+}
+
+//determines whether it will be moved off screen if shifted left 
+function onRightEdgeOfGrid(piece: Piece): boolean {
+
+    let pieceCoordinates: number[][] = piece.pieceCoordinates
 
     for (let i = 0; i < 4; i ++) {
         let coordinates: number[] = pieceCoordinates[i]
         //checking if the x coordinate is on the leftmost or rightmost tile of the grid
-        if (coordinates[0] === 9 || coordinates[0] === 0) {
+        if (coordinates[1] === 0) {
             return true
         }
     }
     return false
 }
 
-//takes in a piece and board, and determines whether it will be moved off screen if moved down 
+// determines whether it will be moved off screen if shifted right 
+function onLeftEdgeOfGrid(piece: Piece): boolean {
+    let pieceCoordinates: number[][] = piece.pieceCoordinates
+    for (let i = 0; i < 4; i ++) {
+        let coordinates: number[] = pieceCoordinates[i]
+        //checking if the x coordinate is on the leftmost or rightmost tile of the grid
+        if (coordinates[1] === 9) {
+            return true
+        }
+    }
+    return false
+}
+
+//takes in a piece and board, and determines whether piece will be moved off screen if moved down 
+//NEED TO ADD CHECKINH IF THERE IS PIECE BELOW 
 function canMoveDown(grid: Tile[][], piece: Piece): boolean {
 
     let pieceCoordinates: number[][] = piece.pieceCoordinates
@@ -102,7 +142,6 @@ function canMoveDown(grid: Tile[][], piece: Piece): boolean {
         let coordinates: number[] = pieceCoordinates[i]
         //checking if the y coordinate is on the bottom row of the grid
         if (coordinates[0] === 19) {
-            //need to add checking if there is piece below
             return false; 
         }
     }  
@@ -118,42 +157,96 @@ function createPiece(): Piece {
     return newPiece             
 }    
 
-function moveDown(grid: Tile[][], piece: Piece): Tile[][] {
-    // if (canMoveDown(grid, piece)) {
-    if (canMoveDown(grid, piece)) {
-        let pieceCoordinates : number[][] =  piece.pieceCoordinates
-        for (let i = 0; i < 4; i++) {
-            let coordinates: number[] = pieceCoordinates[i]
-            let xCoordinate: number = coordinates[0]
-            let yCoordinate: number = coordinates[1]
-            let tile: Tile = grid[xCoordinate][yCoordinate]         
+function removeOldPiece(grid: Tile[][], piece: Piece): Tile[][] {
+    let pieceCoordinates : number[][] =  piece.pieceCoordinates
+    for (let i = 0; i < 4; i++) {
+        let coordinates: number[] = pieceCoordinates[i]
+        let xCoordinate: number = coordinates[0]
+        let yCoordinate: number = coordinates[1]
+        let tile: Tile = grid[xCoordinate][yCoordinate]         
  
-            tile.hasPiece = false; 
-            tile.colour = "None"
+        tile.hasPiece = false; 
+        tile.colour = "None"
+    }
+    return grid
+}
 
-            tile = grid[xCoordinate+1][yCoordinate]
-            tile.hasPiece = true;
-            tile.colour = piece.colour   
+function addNewPiece(grid: Tile[][], piece: Piece, index: number, shiftNumber: number): Tile[][] {
+    let pieceCoordinates : number[][] =  piece.pieceCoordinates
+    for (let i = 0; i < 4; i++) {
+        let coordinates: number[] = pieceCoordinates[i]
 
-            //update the new piece coordinate
-            coordinates[0] = xCoordinate+1
+        //update the new piece coordinate
+        coordinates[index] = coordinates[index]+shiftNumber
 
-        }
+        let xCoordinate: number = coordinates[0]
+        let yCoordinate: number = coordinates[1]
+        let tile: Tile = grid[xCoordinate][yCoordinate]        
+
+        tile.hasPiece = true;
+        tile.colour = piece.colour
+    }
+    return grid
+}
+
+function moveDown(grid: Tile[][], piece: Piece): Tile[][] {
+    if (canMoveDown(grid, piece)) {
+        grid = removeOldPiece(grid, piece)
+        grid = addNewPiece(grid, piece, 0, 1)
     } 
     return grid;
 }
 
+function moveRight(grid: Tile[][], piece: Piece): Tile[][] {
+    if (!onRightEdgeOfGrid(piece)) {
+        grid = removeOldPiece(grid, piece)
+        grid = addNewPiece(grid, piece, 1, -1)
+    } 
+    return grid;
+}
+
+function moveLeft(grid: Tile[][], piece: Piece): Tile[][] {
+    if (!onLeftEdgeOfGrid(piece)) {
+    // if (true) {
+        grid = removeOldPiece(grid, piece)
+        grid = addNewPiece(grid, piece, 1, 1)
+    } 
+    return grid;
+}
 
 function Game() {
     
     let [piece, setPiece] = useState(createPiece())
-    let [hasPiece, setHasPiece] = useState(false) 
     let [board, setBoard] = useState(deployPiece(makeGrid(), piece))
 
-    function getNewState() {  
+    function handleMoveLeft() {
+        const newBoard = moveRight([...board], piece); 
+        setBoard(newBoard);
+        setPiece(piece);
+    }
+
+    function handleMoveRight() {
+        const newBoard = moveLeft([...board], piece); 
+        setBoard(newBoard);
+        setPiece(piece);
+    }
+
+    function handleMoveDown() {
         const newBoard = moveDown([...board], piece); 
         setBoard(newBoard);
         setPiece(piece);
+    }
+
+    function updateGame() {
+        if (canMoveDown(board, piece)) {
+            handleMoveDown()
+        } else {
+            setPiece(getRandomPiece())
+        }
+    }
+
+    function getNewState() {  
+        handleMoveDown()
     }
 
     useEffect(() => {
@@ -162,21 +255,45 @@ function Game() {
                 getNewState()
             }, 1000) 
         }   
-    )      
-      
+    )
+
+    document.addEventListener("keydown", function(event) {
+        event.preventDefault();
+        const key = event.key;
+        switch (key) { 
+          case "ArrowLeft":
+            // Left pressed
+            handleMoveLeft()
+            break;
+          case "ArrowRight":
+            // Right pressed
+            handleMoveRight()
+            break;
+        case "ArrowDown":
+            // Down pressed
+            handleMoveDown()
+            break;
+        }
+        //   case "ArrowUp":
+        //     // Up pressed
+        //     break;
+      });
+
     return ( 
-        <div className='Board'>
-            {board.map((row) => (
-                <li className = 'Row'>
-                    {row.map((tile) => (
-                        <li className = {row[row.indexOf(tile)].colour}></li>
+            <div className='Board'>
+                {board.map((row) => (
+                    <li className = 'Row'>
+                        {row.map((tile) => (
+                    <li className = {row[row.indexOf(tile)].colour}></li>
                     ))}
-                </li>
+                    </li>
                 ))}
-        </div>
+            </div>
+
     );
 }
    
   export default Game;
 
-    
+  
+
