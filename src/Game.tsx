@@ -6,7 +6,7 @@ interface Tile {
     hasPiece: boolean
     colour: string
 }
-
+  
 interface Piece {
     pieceCoordinates: number[][]
     colour: string
@@ -14,7 +14,7 @@ interface Piece {
     rotation: number
 }
 
-const greenRotation: number[][][] = [[[0, 0], [-1, 0], [0, -1], [1, -1]], [[0, 0], [0, 1], [-1, 0], [-1, -1], [-2, 0]], [[0, 0], [-1, 0], [0, -1], [1, -1]], [[0, 0], [0, 1], [-1, 0], [-1, -1], [-2, 0]]]
+const greenRotation: number[][][] = [[[0, 0], [-1, 0], [0, 1], [1, 1]], [[0, 0], [-1, 0], [-1, 1], [0, -1]], [[0, 0], [-1, 0], [0, 1], [1, 1]], [[0, 0], [-1, 0], [-1, 1], [0, -1]]]
 const redRotation: number[][][] = [[[0, 0], [-1,  0], [0, -1], [1, -1]], [[0, 0], [0, 1], [-1, 0], [-1, -1]], [[0, 0], [-1,  0], [0, -1], [1, -1]], [[0, 0], [0, 1], [-1, 0], [-1, -1]]]
 const purpleRotation: number[][][] = [[[0, 0], [-1, 0], [1, 0], [0, 1]], [[0, 0], [0, -1], [0, 1], [1, 0]], [[0, 0], [-1, 0], [1, 0], [0, -1]], [[0, 0], [0, 1], [0, -1], [-1, 0]]]
 const darkBlueRotation: number[][][] = [[[0, 0], [1, 0], [-1, 0], [-1, 1]], [[0, 0], [0, 1], [0, -1], [1, 1]], [[0, 0], [-1, 0], [1, 0], [1, -1]], [[0, 0], [0, -1], [0, 1], [-1, -1]]]
@@ -71,15 +71,29 @@ function getRandomPiece(): Piece {
 } 
 
 function createPiece(): Piece {
+
     let piece: Piece = getRandomPiece();
+    let pieceCoordinates: number[][] = piece.pieceCoordinates;
+    let newPieceCoordinates: number[][] = [[], [], [], []];
+
+    // Copy coordinates from the original piece
+    for (let i = 0; i < 4; i++) {
+        let coordinatesToCopy: number[] = pieceCoordinates[i];
+        let yCoordinateToCopy: number = coordinatesToCopy[0];
+        let xCoordinateToCopy: number = coordinatesToCopy[1];
+        let newCoordinates: number[] = [yCoordinateToCopy, xCoordinateToCopy];
+        newPieceCoordinates[i] = newCoordinates;
+    }
+
+    // Create a new piece object with the copied coordinates
     let newPiece: Piece = {
-        pieceCoordinates: piece.pieceCoordinates,
+        pieceCoordinates: newPieceCoordinates, // Use the new coordinates array
         colour: piece.colour,
         rotationCoordinates: piece.rotationCoordinates,
         rotation: 0
-    } 
+    };
     return newPiece             
-}    
+}
 
 //takes in a grid and piece and returns true if the piece can be deployed, false otehrwise
 function canDeploy(grid: Tile[][], piece: Piece): boolean {
@@ -105,17 +119,7 @@ function deployPiece(grid: Tile[][], piece: Piece): Tile[][] {
     return grid;  
 }
 
-//takes in a piece, and determines whether it will hit another piece if it moves down
-function willHitPieceUnder(grid: Tile[][], piece: Piece): boolean {
-    removeOldPiece(grid, piece)
-    let hasPiece: boolean = false
-    hasPiece = willHitPiece(grid, piece, 0, 1)
-    movePiece(grid, piece, 0, 0)
-
-    return hasPiece
-}
-
-//takes in a piece, and determines whether it will hit another piece if it moves 
+//determines whether a piece will hit another piece if it moves 
 function willHitPiece(grid: Tile[][], piece: Piece, index: number, shift: number): boolean {
     let pieceCoordinates : number[][] =  piece.pieceCoordinates
     let hasPiece: boolean = false
@@ -140,12 +144,43 @@ function willHitPiece(grid: Tile[][], piece: Piece, index: number, shift: number
     return hasPiece
 }
 
+function canRotate(grid: Tile[][], piece: Piece): boolean {
+    removeOldPiece(grid, piece)
+
+    let addToRotate: number[] = piece.pieceCoordinates[0]
+    let rotateCoordinates: number[][] = piece.rotationCoordinates[piece.rotation]
+
+    for (let i = 0; i < 4; i++) {
+   
+        let addRotationCoordinates: number[] = rotateCoordinates[i]
+
+        let newY = addToRotate[0]+addRotationCoordinates[0]
+        let newX = addToRotate[1]+addRotationCoordinates[1]
+        if ((newY > 19 || newY < 0) || ((newX > 9) || (newX < 0)) || grid[newY][newX].hasPiece) {
+            return false
+        }
+    }     
+    // addPiece(grid, piece, 0, 0)
+    
+    return true
+}
+
+//takes in a piece, and determines whether it will hit another piece if it moves down
+function willHitPieceUnder(grid: Tile[][], piece: Piece): boolean {
+    removeOldPiece(grid, piece)
+    let hasPiece: boolean = false
+    hasPiece = willHitPiece(grid, piece, 0, 1)
+    addPiece(grid, piece, 0, 0)
+
+    return hasPiece
+}
+
 //takes in a piece, and determines whether it will hit another piece if it moves left
 function willHitPieceLeft(grid: Tile[][], piece: Piece): boolean {
     removeOldPiece(grid, piece)
     let hasPiece: boolean = false
     hasPiece = willHitPiece(grid, piece, 1, 1)
-    movePiece(grid, piece, 0, 0)
+    addPiece(grid, piece, 0, 0)
 
     return hasPiece
 }
@@ -155,7 +190,7 @@ function willHitPieceRight(grid: Tile[][], piece: Piece): boolean {
     removeOldPiece(grid, piece)
     let hasPiece: boolean = false
     hasPiece = willHitPiece(grid, piece, 1, -1)
-    movePiece(grid, piece, 0, 0)
+    addPiece(grid, piece, 0, 0)
 
     return hasPiece
 }
@@ -203,7 +238,6 @@ function onBottomEdgeOfGrid(piece: Piece): boolean {
 }
 
 //takes in a piece and board, and determines whether piece will be moved off screen if moved down 
-//NEED TO ADD CHECKINH IF THERE IS PIECE BELOW 
 function canMoveDown(grid: Tile[][], piece: Piece): boolean {
     if (!onBottomEdgeOfGrid(piece) && !willHitPieceUnder(grid, piece)) {
         return true
@@ -226,7 +260,7 @@ function removeOldPiece(grid: Tile[][], piece: Piece): Tile[][] {
     return grid
 }
 
-function movePiece(grid: Tile[][], piece: Piece, index: number, shiftNumber: number): Tile[][] {
+function addPiece(grid: Tile[][], piece: Piece, index: number, shiftNumber: number): Tile[][] {
     let pieceCoordinates : number[][] =  piece.pieceCoordinates
     for (let i = 0; i < 4; i++) {
         let coordinates: number[] = pieceCoordinates[i]
@@ -245,32 +279,32 @@ function movePiece(grid: Tile[][], piece: Piece, index: number, shiftNumber: num
 }
 
 function rotatePiece(grid: Tile[][], piece: Piece): Tile[][] {
-    let pieceCoordinates: number[][] =  piece.pieceCoordinates
-    let addToRotate: number[] = piece.pieceCoordinates[0]
-    let rotateCoordinates: number[][] = piece.rotationCoordinates[piece.rotation]
-
-    for (let i = 0; i < 4; i++) {
-        let coordinatesToChange: number[] = pieceCoordinates[i]
-        let addRotationCoordinates: number[] = rotateCoordinates[i]
-
-        let newY = addToRotate[0]+addRotationCoordinates[0]
-        let newX = addToRotate[1]+addRotationCoordinates[1]
-
-        //update the new piece coordinate
-        coordinatesToChange[0] = newY
-        coordinatesToChange[1] = newX
-
-        let tile: Tile = grid[coordinatesToChange[0]][coordinatesToChange[1]]        
-
-        tile.hasPiece = true;
-        tile.colour = piece.colour
-    }
-    //update the piece.rotation to the next rotation
-    if (piece.rotation === 3) {
-        piece.rotation = 0
-    } else {
-    piece.rotation = piece.rotation + 1
-    }
+        let pieceCoordinates: number[][] =  piece.pieceCoordinates
+        let addToRotate: number[] = piece.pieceCoordinates[0]
+        let rotateCoordinates: number[][] = piece.rotationCoordinates[piece.rotation]
+    
+        for (let i = 0; i < 4; i++) {
+            let coordinatesToChange: number[] = pieceCoordinates[i]
+            let addRotationCoordinates: number[] = rotateCoordinates[i]
+    
+            let newY = addToRotate[0]+addRotationCoordinates[0]
+            let newX = addToRotate[1]+addRotationCoordinates[1]
+    
+            //update the new piece coordinate
+            coordinatesToChange[0] = newY
+            coordinatesToChange[1] = newX
+    
+            let tile: Tile = grid[coordinatesToChange[0]][coordinatesToChange[1]]        
+    
+            tile.hasPiece = true;
+            tile.colour = piece.colour
+        }
+        //update the piece.rotation to the next rotation
+        if (piece.rotation === 3) {
+            piece.rotation = 0
+        } else {
+        piece.rotation = piece.rotation + 1
+        }
     return grid
 }
 
@@ -283,7 +317,7 @@ function rotate(grid: Tile[][], piece: Piece): Tile[][] {
 function moveDown(grid: Tile[][], piece: Piece): Tile[][] {
     if (canMoveDown(grid, piece)) {
         grid = removeOldPiece(grid, piece)
-        grid = movePiece(grid, piece, 0, 1)
+        grid = addPiece(grid, piece, 0, 1)
     }  
     return grid;
 }  
@@ -291,7 +325,7 @@ function moveDown(grid: Tile[][], piece: Piece): Tile[][] {
 function moveRight(grid: Tile[][], piece: Piece): Tile[][] { 
     if (!onRightEdgeOfGrid(piece)&& !willHitPieceRight(grid, piece)) { 
         grid = removeOldPiece(grid, piece)
-        grid = movePiece(grid, piece, 1, -1)
+        grid = addPiece(grid, piece, 1, -1)
     } 
     return grid;
 }     
@@ -299,9 +333,63 @@ function moveRight(grid: Tile[][], piece: Piece): Tile[][] {
 function moveLeft(grid: Tile[][], piece: Piece): Tile[][] {
     if (!onLeftEdgeOfGrid(piece) && !willHitPieceLeft(grid, piece)) {  
         grid = removeOldPiece(grid, piece)
-        grid = movePiece(grid, piece, 1, 1)
+        grid = addPiece(grid, piece, 1, 1)
     } 
     return grid;
+}
+
+function removeRows(grid: Tile[][]): Tile[][] {
+    let timesToShift: number = 0
+    for (let i = 0; i < 20; i++) {
+        let row: Tile[] = grid[i]
+        let hasPiece: boolean = true
+        for (let i2 = 0; i2 < 10; i2++) {
+            let tile: Tile = row[i2]
+            if (tile.hasPiece !== true) {
+                hasPiece = false
+            }
+        }
+        if (hasPiece===true) {
+            timesToShift = timesToShift + 1
+            for (let i2 = 0; i2 < 10; i2++) {
+                let tile: Tile = row[i2]
+                tile.hasPiece = false
+                tile.colour = "None"
+            }
+        }
+    }
+    shiftRows(grid, timesToShift)
+    return grid
+}
+
+//takes in a grid, and shifts rows down if the row below is empty
+function shiftRows(grid: Tile[][], timesToShift: number): Tile[][] {
+    //we check if the entire row beneath does not contain a piece: if so, then we have to shift the current rows tile values downwards, then replace them with hasPiece = false, colour = "None"
+    for (let i = 0; i < timesToShift; i++) {
+    for (let i = 19; i > 0 ; i--) {
+        let row: Tile[] = grid[i]
+        let rowAbove: Tile[] = grid[i-1]
+        let hasPiece: boolean = true
+        for (let i2 = 0; i2 < 10; i2++) {
+            let tile: Tile = row[i2]
+            if (tile.hasPiece == true) {
+                hasPiece = false
+            }
+        }
+        if (hasPiece == true) {
+            for (let i2 = 0; i2 < 10; i2++) {
+                let tile: Tile = row[i2]
+                let tileAbove: Tile = rowAbove[i2]
+                tile.colour = tileAbove.colour
+                tile.hasPiece = tileAbove.hasPiece
+                
+                tileAbove.colour = "None"
+                tileAbove.hasPiece = false
+            }
+        }
+    } 
+}
+return grid
 }
    
 function Game() {
@@ -328,16 +416,31 @@ function Game() {
     }
 
     function handleRotate() {
-        const newBoard = rotate([...board], piece); 
+        if (canRotate(board, piece)) {
+            const newBoard = rotate([...board], piece); 
+            setBoard(newBoard);
+            setPiece(piece);
+        }
+    }
+
+    function handleUpdateRows() {
+        const newBoard = removeRows([...board]); 
         setBoard(newBoard);
-        setPiece(piece);
     }
 
     function updateGame() {
         if (canMoveDown(board, piece)) { 
             handleMoveDown()
         } else {
-            setPiece(createPiece())  
+
+            // let newPiece: Piece = createPiece()
+            // setPiece(newPiece)  
+
+            // const newBoard = deployPiece([...board], piece); 
+            // setBoard(newBoard);
+            handleUpdateRows()
+            piece = createPiece();
+            setPiece(piece);  
             const newBoard = deployPiece([...board], piece); 
             setBoard(newBoard);
         }
@@ -370,7 +473,7 @@ function Game() {
                     handleRotate()
                 break;
             }
-        }
+        }                              
         
         document.addEventListener("keydown", keyHandler)
 
@@ -383,7 +486,7 @@ function Game() {
                 // Since useEffect dependency array is empty, this will be called only on unmount
                 clearInterval(interval);
                 document.removeEventListener("keydown", keyHandler)
-            };
+            };    
         }, []);
     
         return ( 
