@@ -1,78 +1,124 @@
 .App {
   text-align: center;
+  background-color: hsl(0, 0%, 0%);
+  justify-content: space-around;
 }
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Menu {
+  text-align: center;
+  color: rgb(30, 232, 232);
+  background-color: rgb(43, 45, 45);
+  height: 7vh
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Board {
+  
 }
-
-.App-header {
-  background-color: #15b577;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-} */
 
 .App-Title {
-  background-color: #53a1c8;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* width: calc(100%-5px) */
-  height: 10vh;
+  height: 15vh; 
   font-size: 3vw;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
 }
 
-.App-Menu {
-  background-color: #baa6f2;
-  border: solid;
-  height: 5vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(2vmin);
-  color: white;
+.Row {
+  height: 4vh;
+  width: 95vw;
+  margin: auto;
+  list-style: none;
+  padding-bottom: 1vh;
+ 
 }
 
-.App-Board {
+.App-Game {
   background-color: #000000;
   height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 1.5vh;
+  font-size: 2vh;
   white-space: pre-line;
   color: azure;
-    
-
 }
 
-.App-link {
-  color: #61dafb;
+.None {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color: transparent;
+  border-radius: 7px;
 }
 
-.A
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.LighBlue {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #9bfcff; 
+  border-radius: 7px;
+}
+
+.Yellow {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #fbf02a;  
+  border-radius: 7px;
+}  
+
+.Orange {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #f8a219;  
+  border-radius: 7px;
+}
+
+.DarkBlue {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color: hsl(233, 86%, 60%);  
+  border-radius: 7px;
+}
+
+.Green {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #9bffac;  
+  border-radius: 7px;
+}
+
+.Red {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #fd6d6d;  
+  border-radius: 7px;
+}
+
+.Purple {
+  display: inline-block;
+  width: 4.5vh;
+  height: 4.5vh;
+  border: solid;
+  border-color: #fdfdfd;
+  background-color:  #ba80f8; 
+  border-radius: 7px;
 }
